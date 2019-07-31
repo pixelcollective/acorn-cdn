@@ -2,7 +2,7 @@
   "name": "tiny-pixel/acorn-cdn",
   "type": "package",
   "license": "MIT",
-  "description": "Eloquent database support for Acorn projects",
+  "description": "Lightweight CDN mechanism for Acorn projects",
   "authors": [
     {
       "name": "Kelly Mears",
@@ -12,15 +12,14 @@
   "keywords": [
     "wordpress",
     "acorn",
-    "sage",
-    "eloquent"
+    "sage"
   ],
   "support": {
     "issues": "https://github.com/pixelcollective/acorn-cdn/issues"
   },
   "autoload": {
     "psr-4": {
-      "TinyPixel\\AcornCDN\\": "src/"
+      "TinyPixel\\Acorn\\CDN\\": "src/"
     },
     "scripts": [
       "src/helpers.php"
@@ -32,7 +31,7 @@
   "extra": {
     "acorn": {
       "providers": [
-        "TinyPixel\\Acorn\\CDN\\"
+        "TinyPixel\\Acorn\\CDN\\CDNServiceProvider"
       ]
     }
   }
