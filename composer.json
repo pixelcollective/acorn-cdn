@@ -20,10 +20,7 @@
   "autoload": {
     "psr-4": {
       "TinyPixel\\Acorn\\CDN\\": "src/"
-    },
-    "scripts": [
-      "src/helpers.php"
-    ]
+    }
   },
   "require": {
     "php": ">=7.3"

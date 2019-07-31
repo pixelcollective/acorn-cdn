@@ -6,6 +6,7 @@ use TinyPixel\Acorn\CDN\UrlRewriter;
 use Illuminate\Support\Collection;
 use Roots\Acorn\Application;
 use Roots\Acorn\ServiceProvider;
+
 use function Roots\config_path;
 use function Roots\config;
 

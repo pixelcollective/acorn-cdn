@@ -50,12 +50,6 @@ class UrlRewriter
     protected $excludeTypes;
 
     /**
-     * Cache Index
-     * @var int
-     */
-    protected $cacheIndex = 0;
-
-    /**
      * Asset Filters
      * @var array
      */
@@ -105,12 +99,17 @@ class UrlRewriter
      */
     protected function config(Collection $config)
     {
-        $this->localBase       = $config->get('local_url');
-        $this->cdnBase         = $config->get('cdn_url');
-        $this->cacheExpiry     = $config->get('cache_expiry');
+        $this->localBase   = $config->get('local_url');
+        $this->cdnBase     = $config->get('cdn_url');
+        $this->cacheExpiry = $config->get('cache_expiry');
 
-        $this->includeDirs   = Collection::make($config->get('include_directories'));
-        $this->excludeTypes  = Collection::make($config->get('exclude_types'));
+        $this->includeDirs = Collection::make(
+            $config->get('include_directories')
+        );
+
+        $this->excludeTypes = Collection::make(
+            $config->get('exclude_types')
+        );
     }
 
     /**
@@ -132,14 +131,11 @@ class UrlRewriter
      */
     public function handleMarkup($html)
     {
-        $cache = Cache::store('file')->remember("cdn{$this->cacheIndex}", $this->cacheExpiry, function () use ($html) {
+        return Cache::store('file')->remember("cdn{$html}", $this->cacheExpiry, function () use ($html) {
             return preg_replace_callback($this->expression(), [
                 $this, 'rewriteAsset',
             ], $html);
         });
-
-        $this->cacheIndex++;
-        return $cache;
     }
 
     /**
@@ -150,16 +146,13 @@ class UrlRewriter
      */
     public function rewriteAsset(string $url)
     {
-        $cache = Cache::store('file')->remember("cdn.{$this->cacheIndex}", $this->cacheExpiry, function () use ($url) {
+        return Cache::store('file')->remember("cdn.{$url}", $this->cacheExpiry, function () use ($url) {
             if ($this->checkIfTypeExcluded($url) || $this->isPreview()) {
                 return $url;
             }
 
             return str_replace($this->localBase, $this->cdnBase, $url);
         });
-
-        $this->cacheIndex++;
-        return $cache;
     }
 
     /**
