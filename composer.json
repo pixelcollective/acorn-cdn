@@ -1,0 +1,39 @@
+{
+  "name": "tiny-pixel/acorn-cdn",
+  "type": "package",
+  "license": "MIT",
+  "description": "Eloquent database support for Acorn projects",
+  "authors": [
+    {
+      "name": "Kelly Mears",
+      "email": "kelly@tinypixel.dev"
+    }
+  ],
+  "keywords": [
+    "wordpress",
+    "acorn",
+    "sage",
+    "eloquent"
+  ],
+  "support": {
+    "issues": "https://github.com/pixelcollective/acorn-cdn/issues"
+  },
+  "autoload": {
+    "psr-4": {
+      "TinyPixel\\AcornCDN\\": "src/"
+    },
+    "scripts": [
+      "src/helpers.php"
+    ]
+  },
+  "require": {
+    "php": ">=7.3"
+  },
+  "extra": {
+    "acorn": {
+      "providers": [
+        "TinyPixel\\AcornCDN\\"
+      ]
+    }
+  }
+}
