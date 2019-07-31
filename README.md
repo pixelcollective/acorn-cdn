@@ -1,6 +1,6 @@
-# Acorn Models
+# Acorn CDN
 
-Provides Acorn projects with Eloquent Models for WordPress data.
+Lightweight CDN mechanism for Acorn projects.
 
 ## Requirements
 
@@ -10,53 +10,6 @@ Provides Acorn projects with Eloquent Models for WordPress data.
 
 [Composer](https://getcomposer.org)
 
-## Installation
+## Notes
 
-Install via composer:
-
-```bash
-composer require tiny-pixel/acorn-models
-```
-
-If your database is not already configured you can also jumpstart that after installation with
-
-```bash
-wp acorn vendor:publish
-```
-
-Now anytime you would normally use `get_posts` or `WP_Query` you can instead run eloquent queries on the models:
-
-```php
-use TinyPixel\Models\Post;
-
-/**
- * Returns all published posts
- *
- * @return \Illuminate\Support\Collection
- */
-function published()
-{
-    return Post::ofType('post')
-                ->ofStatus('publish')
-                ->with('meta')
-                ->with('author')
-                ->get();
-}
-
- /**
-  * Returns random published posts
-  *
-  * @param int $excludePostId
-  * @return \Illuminate\Support\Collection
-  */
-function randomPosts($excludePostId = get_the_ID())
-{
-    return Post::published()
-                ->orderByRaw('RAND()')
-                ->where('id', '!=', $excludePostId)
-                ->take(3)
-                ->get();
-}
-
-// ...etc
-```
+After installation run `wp acorn vendor:publish` to copy the `cdn.php` configuration file to your `config` directory. It's pretty self-explanatory from there.
