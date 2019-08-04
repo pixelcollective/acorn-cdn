@@ -17,13 +17,20 @@
   "support": {
     "issues": "https://github.com/pixelcollective/acorn-cdn/issues"
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:pixelcollective/support.git"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "TinyPixel\\Acorn\\CDN\\": "src/"
     }
   },
   "require": {
-    "php": ">=7.3"
+    "php": ">=7.3",
+    "tiny-pixel/support": "dev-master"
   },
   "extra": {
     "acorn": {

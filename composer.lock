@@ -4,12 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a8610d407cdcb79fd19c2a2353ddc5b",
-    "packages": [],
+    "content-hash": "129da72927e0996fa1cafdad669bdc47",
+    "packages": [
+        {
+            "name": "tiny-pixel/support",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:pixelcollective/support.git",
+                "reference": "c131a076d09a4ca9f0535364c34856814ee5ad5b"
+            },
+            "require": {
+                "php": ">=7.3"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "TinyPixel\\Support\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kelly Mears",
+                    "email": "kelly@tinypixel.dev"
+                }
+            ],
+            "description": "Internal supports and utilities",
+            "keywords": [
+                "support",
+                "tiny-pixel",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/pixelcollective/acorn-support/issues"
+            },
+            "time": "2019-08-04T08:40:09+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "tiny-pixel/support": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

@@ -12,4 +12,4 @@ Lightweight CDN mechanism for Acorn projects.
 
 ## Notes
 
-After installation run `wp acorn vendor:publish` to copy the `cdn.php` configuration file to your `config` directory. It's pretty self-explanatory from there.
+After installation run `wp acorn vendor:publish` to copy the `cdn.php` configuration file to your `config` directory.

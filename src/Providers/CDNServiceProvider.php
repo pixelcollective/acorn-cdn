@@ -2,34 +2,49 @@
 
 namespace TinyPixel\Acorn\CDN\Providers;
 
-use TinyPixel\Acorn\CDN\UrlRewriter;
-use Illuminate\Support\Collection;
+use function Roots\config;
+use function Roots\config_path;
 use Roots\Acorn\Application;
 use Roots\Acorn\ServiceProvider;
+use Illuminate\Support\Collection;
+use TinyPixel\Acorn\CDN\UrlRewriter;
 
-use function Roots\config_path;
-use function Roots\config;
-
+/**
+ * AcornCDN Service Provider
+ *
+ * @see Roots\Acorn\ServiceProvider https://github.com/roots/acorn/blob/master/src/Acorn/ServiceProvider.php
+ *
+ * @author  Kelly Mears <kelly@tinypixel.dev>
+ * @license MIT
+ * @since   1.0.0
+ */
 class CDNServiceProvider extends ServiceProvider
 {
     /**
-     * Register with container.
+     * Registers and configures the service
+     * with the Acorn IOC
      *
      * @return void
      */
     public function register()
     {
-        $this->handleConfiguration();
+        if (file_exists(config_path('cdn'))) {
+            $this->mergeConfigFrom(config_path('cdn'), 'cdn');
+        }
 
-        if (! $this->cdnConfig->isEmpty()) {
-            $this->app->singleton('cdn', function () {
-                (new UrlRewriter($this->app))->init($this->cdnConfig);
+        $this->cdnConfig = Collection::make(config('cdn'));
+
+        if ($this->isBootable()) {
+            $this->app->singleton('cdn', function ($app) use ($cdnConfig) {
+                $cdn = new UrlRewriter($app->make('cache')->store('file'));
+                $cdn->init($cdnConfig);
             });
         }
     }
 
     /**
-     * Boots services.
+     * Instantiates the CDN singleton and registers
+     * publishable items with the Acorn CLI.
      *
      * @return void
      */
@@ -37,22 +52,20 @@ class CDNServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../../config/cdn.php' => config_path('cdn.php'),
-        ]);
+        ], 'AcornCDN');
 
-        $this->app->make('cdn');
+        if ($this->isBootable()) {
+            $this->app->make('cdn');
+        }
     }
 
     /**
-     * Configure services.
+     * Boot if configuration set and in specified environment
      *
      * @return void
      */
-    public function handleConfiguration()
+    public function isBootable()
     {
-        if (file_exists(config_path('cdn'))) {
-            $this->mergeConfigFrom(config_path('cdn'), 'cdn');
-        }
-
-        $this->cdnConfig = Collection::make(config('cdn'));
+        return !config('cdn.env') == config('app.env');
     }
 }

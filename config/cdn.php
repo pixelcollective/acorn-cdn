@@ -5,7 +5,7 @@
 | Content Delivery Network
 |--------------------------------------------------------------------------
 |
-| Make like sonic with your asset URLs.
+| Make like Sonic with your asset URLs.
 |
 */
 
@@ -72,5 +72,18 @@ return [
 
     'exclude_types' => [
         'php',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enabled environments
+    |--------------------------------------------------------------------------
+    |
+    | Environments to enable CDN service for
+    |
+    */
+
+    'env' => [
+        'production',
     ],
 ];
