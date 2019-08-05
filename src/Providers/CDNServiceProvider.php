@@ -28,16 +28,14 @@ class CDNServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (file_exists(config_path('cdn'))) {
-            $this->mergeConfigFrom(config_path('cdn'), 'cdn');
-        }
-
-        $this->cdnConfig = Collection::make(config('cdn'));
-
         if ($this->isBootable()) {
-            $this->app->singleton('cdn', function ($app) use ($cdnConfig) {
+            $this->mergeConfigFrom(config_path('cdn'), 'cdn');
+
+            $this->config = Collection::make(config('cdn'));
+
+            $this->app->singleton('cdn', function ($app) {
                 $cdn = new UrlRewriter($app->make('cache')->store('file'));
-                $cdn->init($cdnConfig);
+                $cdn->init($this->config);
             });
         }
     }
@@ -66,6 +64,6 @@ class CDNServiceProvider extends ServiceProvider
      */
     public function isBootable()
     {
-        return !config('cdn.env') == config('app.env');
+        return config('cdn.env') == config('app.env');
     }
 }
