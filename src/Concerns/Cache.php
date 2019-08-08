@@ -9,7 +9,7 @@ trait Cache
     /**
      * Cache
      *
-     * @var \Illuminate\Cache\CacheManager
+     * @var \Illuminate\Cache\Repository
      */
     protected $cache;
 
@@ -26,7 +26,7 @@ trait Cache
      * @param  \Illuminate\Cache\Repository $cache
      * @return void
      */
-    public function __construct(\Illuminate\Cache\Repository $cache)
+    public function useCache(Repository $cache)
     {
         $this->cache = $cache;
     }

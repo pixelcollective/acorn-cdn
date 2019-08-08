@@ -6,8 +6,8 @@ use function Roots\config;
 use function Roots\config_path;
 use Roots\Acorn\Application;
 use Roots\Acorn\ServiceProvider;
-use Illuminate\Support\Collection;
 use TinyPixel\Acorn\CDN\UrlRewriter;
+use Illuminate\Support\Collection;
 
 /**
  * AcornCDN Service Provider
@@ -28,16 +28,13 @@ class CDNServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (file_exists(config_path('cdn'))) {
-            $this->mergeConfigFrom(config_path('cdn'), 'cdn');
+        if ($configPath = file_exists($this->app->configPath('cdn'))) {
+            $this->mergeConfigFrom($configPath, 'cdn');
         }
 
-        $this->cdnConfig = Collection::make(config('cdn'));
-
         if ($this->isBootable()) {
-            $this->app->singleton('cdn', function ($app) use ($cdnConfig) {
-                $cdn = new UrlRewriter($app->make('cache')->store('file'));
-                $cdn->init($cdnConfig);
+            $this->app->singleton('cdn', function ($app) {
+                return new UrlRewriter($app);
             });
         }
     }
@@ -55,7 +52,10 @@ class CDNServiceProvider extends ServiceProvider
         ], 'AcornCDN');
 
         if ($this->isBootable()) {
-            $this->app->make('cdn');
+            $this->app->make('cdn')->init(
+                $this->app->make('cache')->store('file'),
+                Collection::make($this->app['config']->get('cdn'))
+            );
         }
     }
 
@@ -66,6 +66,9 @@ class CDNServiceProvider extends ServiceProvider
      */
     public function isBootable()
     {
-        return !config('cdn.env') == config('app.env');
+        return ! in_array(
+            $this->app['config']->get('app.env'),
+            $this->app['config']->get('cdn.env')
+        );
     }
 }

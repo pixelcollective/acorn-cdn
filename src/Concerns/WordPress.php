@@ -80,4 +80,21 @@ trait WordPress
 
         return $preview;
     }
+
+    /**
+     * Processes URLs contained within larger content strings
+     *
+     * @param  string $html
+     * @return string
+     */
+    public function rewriteMarkup($html)
+    {
+        if ($this instanceOf WordPressService && $this->isWordPressPreview()) {
+            return $html;
+        }
+
+        return preg_replace_callback($this->urlMatchExpression, [
+            $this, 'rewriteUrl',
+        ], $html);
+    }
 }
