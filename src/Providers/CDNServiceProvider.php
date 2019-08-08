@@ -28,11 +28,9 @@ class CDNServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($configPath = file_exists($this->app->configPath('cdn'))) {
-            $this->mergeConfigFrom($configPath, 'cdn');
-        }
-
         if ($this->isBootable()) {
+            $this->mergeConfigFrom($this->app->configPath('cdn.php'), 'cdn');
+
             $this->app->singleton('cdn', function ($app) {
                 return new UrlRewriter($app);
             });
@@ -47,8 +45,10 @@ class CDNServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $publishableConfig = __DIR__ . '/../../config/cdn.php';
+
         $this->publishes([
-            __DIR__ . '/../../config/cdn.php' => config_path('cdn.php'),
+            $publishableConfig => $this->app->configPath('cdn.php'),
         ], 'AcornCDN');
 
         if ($this->isBootable()) {
